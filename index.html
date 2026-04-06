@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+</head>
+<body style="background:#121212;color:white;font-family:sans-serif;">
+
+<h2>🤖 Chatbot</h2>
+
+<div id="chat"></div>
+
+<input id="mensaje" placeholder="Escribe..." />
+<button onclick="enviar()">Enviar</button>
+
+<script>
+async function enviar() {
+    let input = document.getElementById("mensaje");
+    let mensaje = input.value;
+
+    if (!mensaje) return;
+
+    let chat = document.getElementById("chat");
+
+    chat.innerHTML += "<p><b>Tú:</b> " + mensaje + "</p>";
+
+    input.value = "";
+
+    let res = await fetch("/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({mensaje})
+    });
+
+    let data = await res.json();
+
+    chat.innerHTML += "<p><b>IA:</b> " + data.respuesta + "</p>";
+}
+</script>
+
+</body>
+</html>
